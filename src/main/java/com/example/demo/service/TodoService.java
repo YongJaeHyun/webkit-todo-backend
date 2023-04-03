@@ -17,7 +17,7 @@ public class TodoService {
 		TodoEntity entity = TodoEntity.builder().userId("user01").title("My First todo item").build();
 		// Todo Entity 저장
 		repository.save(entity);
-		TodoEntity savedEntity = repository.findByUserId(entity.getUserId()).get(0);
+		TodoEntity savedEntity = repository.searchByUserId(entity.getUserId()).get(0);
 		return savedEntity.getUserId();
 	}
 }
