@@ -8,13 +8,16 @@ import com.example.demo.persistence.TodoRepository;
 
 @Service
 public class TodoService {
+
 	@Autowired
 	private TodoRepository repository;
-	
+
 	public String testService() {
-		TodoEntity entity = TodoEntity.builder().title("My first todo item").build();
+		// Todo Entity 생성
+		TodoEntity entity = TodoEntity.builder().userId("user01").title("My First todo item").build();
+		// Todo Entity 저장
 		repository.save(entity);
-		TodoEntity savedEntity = repository.findById(entity.getId()).get();
-		return savedEntity.getTitle();
+		TodoEntity savedEntity = repository.findByUserId(entity.getUserId()).get(0);
+		return savedEntity.getUserId();
 	}
 }
