@@ -18,7 +18,7 @@ public class TestController {
 	@Autowired
 	private TodoService service;
 	
-	@GetMapping("test")
+	@GetMapping("/test")
 	public ResponseEntity<?> testTodo(){
 		String str = service.testService();
 		List<String> list = new ArrayList<String>();
