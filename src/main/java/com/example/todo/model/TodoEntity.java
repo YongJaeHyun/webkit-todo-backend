@@ -20,7 +20,7 @@ import lombok.NoArgsConstructor;
 @Table(name="Todo")
 public class TodoEntity {
 	@Id
-	@GeneratedValue(generator="system-uuid")
+	@GeneratedValue(generator="system-uuid")  // 자동으로 id 성성
 	@GenericGenerator(name="system-uuid", strategy="uuid")
 	private String id;
 	private String userId;

@@ -26,25 +26,38 @@ public class TodoService {
 	public List<TodoEntity> retrieve(final String userId){
 		return repository.findByUserId(userId);
 	}
-	
-	public Optional<TodoEntity> update(final TodoEntity entity){
+
+	public void validate(final TodoEntity entity) {
+		if (entity == null) {
+			log.warn("Entity cannot be null.");
+			throw new RuntimeException("Entity cannot be null.");
+		}
+		if (entity.getUserId() == null) {
+			log.warn("Unknown user.");
+			throw new RuntimeException("Unknown user.");
+		}
+	}
+
+	public Optional<TodoEntity> update(final TodoEntity entity) {
+		// Validations
 		validate(entity);
-		if(repository.existsById(entity.getId())) {
+		if (repository.existsById(entity.getId())) {
 			repository.save(entity);
 		} 
 		else {
-			throw new RuntimeException("Unknown id");
+			throw new RuntimeException("Unknown id");		
 		}
+
 		return repository.findById(entity.getId());
 	}
 	
 	public Optional<TodoEntity> updateTodo(final TodoEntity entity){
 		validate(entity);
 		
-		// 테이블에서 id에 해당하는 데이터 셋을 가져온다.
+		// 테이블에서 id에 해당하는 데이타 셋을 가져온다.
 		final Optional<TodoEntity> original = repository.findById(entity.getId());
-		
-		//original에 담겨진 내용을 todo에 할당하고 title, done값을 변경한다.
+
+		// original에 담겨진 내용을 todo에 할당하고 title, done값을 변경한다.
 		original.ifPresent(todo -> {
 			todo.setTitle(entity.getTitle());
 			todo.setDone(entity.isDone());
@@ -54,14 +67,11 @@ public class TodoService {
 		return repository.findById(entity.getId());
 	}
 
-	public void validate(final TodoEntity entity) {
-		if (entity == null) {
-			log.warn("Entity cannot be null");
-			throw new RuntimeException("Entity cannot be null");
-		}
-		if (entity.getUserId() == null) {
-			log.warn("Unknown user.");
-			throw new RuntimeException("Unknown user.");
-		}
+	public String delete(final String id) {
+		if (repository.existsById(id))
+			repository.deleteById(id);
+		else
+			throw new RuntimeException("id does not exist");
+		return "Deleted";
 	}
 }
