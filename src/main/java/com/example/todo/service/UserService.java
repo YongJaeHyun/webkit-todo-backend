@@ -28,6 +28,14 @@ public class UserService {
 		return userRepository.save(userEntity);
 	}
 	
+	public void update(final String username, final String password, final String email) {
+		userRepository.updateUserInfo(username, password, email);
+	}
+	
+	public UserEntity getById(final String id) {
+		return userRepository.getById(id);
+	}
+	
 	public UserEntity getByCredentials(final String email, final String password, final PasswordEncoder encoder) {
 		final UserEntity originalUser = userRepository.findByEmail(email);
 		if(originalUser != null && encoder.matches(password, originalUser.getPassword())) {
