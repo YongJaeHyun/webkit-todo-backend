@@ -49,6 +49,11 @@ public class TodoService {
 		return repository.findByUserId(entity.getUserId());
 	}
 	
+	public List<TodoEntity> deleteAll() {
+		repository.deleteAll();
+		return repository.findAll();
+	}
+	
 	public void validate(final TodoEntity entity) {
 		if (entity == null) {
 			log.warn("Entity cannot be null.");

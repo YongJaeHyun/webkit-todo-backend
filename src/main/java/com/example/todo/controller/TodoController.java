@@ -112,6 +112,24 @@ public class TodoController {
 			ResponseDTO<TodoDTO> response = ResponseDTO.<TodoDTO>builder().error(error).build();
 			return ResponseEntity.badRequest().body(response);
 		}
+	}
+	
+	@DeleteMapping("/all")
+	public ResponseEntity<?> deleteAllTodo() {
+		try {
+			List<TodoEntity> entities = service.deleteAll();
+			// entities를 dtos로 스트림 변환한다.
+			List<TodoDTO> dtos = entities.stream().map(TodoDTO::new).collect(Collectors.toList());
+			
+			// ResponseDTO를 생성한다.
+			ResponseDTO<TodoDTO> response = ResponseDTO.<TodoDTO>builder().data(dtos).build();
 
+			// HTTP Status 200 상태로 response 를 전송한다.
+			return ResponseEntity.ok().body(response);
+		} catch (Exception e) {
+			String error = e.getMessage();
+			ResponseDTO<TodoDTO> response = ResponseDTO.<TodoDTO>builder().error(error).build();
+			return ResponseEntity.badRequest().body(response);
+		}
 	}
 }
